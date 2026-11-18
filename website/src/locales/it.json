@@ -301,6 +301,13 @@
             "button": "Elimina",
             "help": "Selezionare un'area rettangolare sulla mappa per rimuovere i punti GPS e i punti d'interesse.",
             "help_no_selection": "Seleziona una traccia per pulire i punti GPS e i punti d'interesse."
+        },
+        "points": {
+            "tooltip": "Modifica i punti di una traccia",
+            "delete": "Cancella punto",
+            "insert_after": "Aggiungi punto dopo",
+            "help": "Click su un punto per selezionarlo, trascinalo per muoverlo, oppure shift-click per cancellarlo. Click sulla traccia per aggiungere un punto.",
+            "help_no_selection": "Seleziona una traccia per editare i suoi punti."
         }
     },
     "layers": {
