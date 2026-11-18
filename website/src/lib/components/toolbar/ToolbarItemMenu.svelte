@@ -9,6 +9,7 @@
     import Elevation from '$lib/components/toolbar/tools/Elevation.svelte';
     import Extract from '$lib/components/toolbar/tools/Extract.svelte';
     import Clean from '$lib/components/toolbar/tools/Clean.svelte';
+    import Points from '$lib/components/toolbar/tools/points/Points.svelte';
     import Reduce from '$lib/components/toolbar/tools/reduce/Reduce.svelte';
     import RoutingControlPopup from '$lib/components/toolbar/tools/routing/RoutingControlPopup.svelte';
     import { Popup } from 'maplibre-gl';
@@ -62,6 +63,8 @@
                         <Clean />
                     {:else if $currentTool === Tool.REDUCE}
                         <Reduce />
+                    {:else if $currentTool === Tool.POINTS}
+                        <Points />
                     {/if}
                 </Card.Content>
             </Card.Root>

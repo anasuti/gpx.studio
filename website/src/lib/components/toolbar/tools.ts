@@ -10,6 +10,7 @@ export enum Tool {
     ELEVATION,
     REDUCE,
     CLEAN,
+    POINTS,
 }
 
 export const currentTool: Writable<Tool | null> = writable(null);

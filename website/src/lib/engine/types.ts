@@ -190,6 +190,8 @@ export type SelectionAnchors = {
 export type SelectionSegments = {
     starts: Uint32Array;
     ids: string[];
+    /** The revision of the routing buffers that the indices belong to. */
+    revision: number;
 };
 
 /**

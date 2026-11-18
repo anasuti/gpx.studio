@@ -215,6 +215,34 @@ pub fn insert_anchor(state: State<AppState>, revision: u32, lng: f64, lat: f64) 
 }
 
 #[tauri::command(async)]
+pub fn move_trackpoint(
+    state: State<AppState>,
+    revision: u32,
+    index: u32,
+    lng: f64,
+    lat: f64,
+) -> api::Outcome {
+    state.run(move |e| api::move_trackpoint(e, revision, index, lng, lat))
+}
+
+#[tauri::command(async)]
+pub fn insert_trackpoint(
+    state: State<AppState>,
+    revision: u32,
+    index: u32,
+    lng: f64,
+    lat: f64,
+    ele: f64,
+) -> api::Outcome {
+    state.run(move |e| api::insert_trackpoint(e, revision, index, lng, lat, ele))
+}
+
+#[tauri::command(async)]
+pub fn delete_trackpoint(state: State<AppState>, revision: u32, index: u32) -> api::Outcome {
+    state.run(move |e| api::delete_trackpoint(e, revision, index))
+}
+
+#[tauri::command(async)]
 pub fn change_loop_start(state: State<AppState>, revision: u32, index: u32) -> api::Outcome {
     state.run(move |e| api::change_loop_start(e, revision, index))
 }

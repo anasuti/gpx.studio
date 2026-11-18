@@ -301,6 +301,13 @@
             "button": "Delete",
             "help": "Select a rectangle area on the map to remove GPS points and points of interest.",
             "help_no_selection": "Select a trace to clean GPS points and points of interest."
+        },
+        "points": {
+            "tooltip": "Edit the points of a trace",
+            "delete": "Delete point",
+            "insert_after": "Add point after",
+            "help": "Click a point to select it, drag it to move it, or shift-click it to delete it. Click the trace to add a point there.",
+            "help_no_selection": "Select a trace to edit its points."
         }
     },
     "layers": {

@@ -48,6 +48,7 @@ export const ANCHOR_LAYER_KEY = {
     overpass: 'overpass-end',
     waypoints: 'waypoints-end',
     routingControls: 'routing-controls-end',
+    pointsControls: 'points-controls-end',
 };
 const anchorLayers: LayerSpecification[] = Object.values(ANCHOR_LAYER_KEY).map((id) => ({
     id: id,

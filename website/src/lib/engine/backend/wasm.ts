@@ -112,6 +112,9 @@ export async function createWasmBackend(): Promise<Backend> {
         split: lift((revision, at, type) => w.split(revision, at, splitType(type))),
         route: lift(w.route),
         insert_anchor: lift(w.insert_anchor),
+        move_trackpoint: lift(w.move_trackpoint),
+        insert_trackpoint: lift(w.insert_trackpoint),
+        delete_trackpoint: lift(w.delete_trackpoint),
         change_loop_start: lift(w.change_loop_start),
 
         can_undo: lift(w.can_undo),

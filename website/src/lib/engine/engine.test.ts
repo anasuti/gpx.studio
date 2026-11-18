@@ -311,6 +311,54 @@ describe('statistics', () => {
     });
 });
 
+describe('trackpoint editing', () => {
+    it('moves, inserts and deletes points by their index in the selection', async () => {
+        await load('with_time');
+        const request = engine.requestStatistics();
+        await request.set(['segments']);
+
+        const initial = get(engine.statistics);
+        const length = initial.length;
+        const revision = initial.segments!.revision;
+        const ele = initial.ele[10];
+
+        assert.equal(await engine.moveTrackpoint(revision, 10, 4.5, 50.5), true);
+        let statistics = get(engine.statistics);
+        assert.equal(statistics.length, length);
+        assert.deepEqual([statistics.lng[10], statistics.lat[10]], [4.5, 50.5]);
+        assert.equal(statistics.ele[10], ele);
+
+        // a point added between two others, with an elevation in between
+        const insertRevision = statistics.segments!.revision;
+        const a = { lng: statistics.lng[10], lat: statistics.lat[10], ele: statistics.ele[10] };
+        const b = { lng: statistics.lng[11], lat: statistics.lat[11], ele: statistics.ele[11] };
+        const ratio = 0.4;
+        const lng = a.lng + ratio * (b.lng - a.lng);
+        const lat = a.lat + ratio * (b.lat - a.lat);
+        const insertedEle = a.ele + ratio * (b.ele - a.ele);
+        assert.equal(
+            await engine.insertTrackpoint(insertRevision, 11, lng, lat, insertedEle),
+            true
+        );
+        statistics = get(engine.statistics);
+        assert.equal(statistics.length, length + 1);
+        assert.deepEqual([statistics.lng[11], statistics.lat[11]], [lng, lat]);
+        assert.equal(statistics.ele[11], insertedEle);
+
+        // the point is deleted again
+        const deleteRevision = statistics.segments!.revision;
+        assert.equal(await engine.deleteTrackpoint(deleteRevision, 11), true);
+        statistics = get(engine.statistics);
+        assert.equal(statistics.length, length);
+
+        // an index from before the edits is refused
+        assert.equal(await engine.moveTrackpoint(revision, 0, 0, 0), false);
+        assert.match(lastError() ?? '', /selection changed/);
+
+        request.release();
+    });
+});
+
 describe('file state', () => {
     it('has one feature per segment and keeps the unchanged ones when editing', async () => {
         await load('with_tracks_and_segments');

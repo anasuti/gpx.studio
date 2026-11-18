@@ -638,6 +638,62 @@ pub fn insert_anchor<H: History>(
     })
 }
 
+/// Moves the trackpoint `index` of the selection to the given coordinates, keeping its elevation,
+/// time and other data: what dragging it on the map does, without rerouting the segment.
+pub fn move_trackpoint<H: History>(
+    engine: &mut Engine<H>,
+    revision: u32,
+    index: u32,
+    lng: f64,
+    lat: f64,
+) -> Outcome {
+    at_revision(engine, revision, |engine| {
+        edit(
+            engine,
+            Command::MoveTrackpoint(engine::MoveTrackpoint { index, lng, lat }),
+        )
+    })
+}
+
+/// Inserts a trackpoint at `index` in the selection: the new point is at that index, and the ones
+/// from there on are shifted. Its time is interpolated between its neighbours when they have one,
+/// and its other data comes from the closest one.
+pub fn insert_trackpoint<H: History>(
+    engine: &mut Engine<H>,
+    revision: u32,
+    index: u32,
+    lng: f64,
+    lat: f64,
+    ele: f64,
+) -> Outcome {
+    at_revision(engine, revision, |engine| {
+        edit(
+            engine,
+            Command::InsertTrackpoint(engine::InsertTrackpoint {
+                index,
+                lng,
+                lat,
+                ele,
+            }),
+        )
+    })
+}
+
+/// Deletes the trackpoint `index` of the selection. A segment left without trackpoints is removed,
+/// with its route or its track when they have nothing left.
+pub fn delete_trackpoint<H: History>(
+    engine: &mut Engine<H>,
+    revision: u32,
+    index: u32,
+) -> Outcome {
+    at_revision(engine, revision, |engine| {
+        edit(
+            engine,
+            Command::DeleteTrackpoint(engine::DeleteTrackpoint { index }),
+        )
+    })
+}
+
 /// Makes the trackpoint `index` of the selection the start of its segment, which is a loop (the
 /// trackpoints before it go to the end, and the loop closes on it).
 pub fn change_loop_start<H: History>(engine: &mut Engine<H>, revision: u32, index: u32) -> Outcome {

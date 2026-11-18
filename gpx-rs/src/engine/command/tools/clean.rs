@@ -132,7 +132,11 @@ impl Editor for Cleaner<'_> {
 /// Removes what the clean left empty: the emptied segments, the routes of these segments and the
 /// tracks that lost all their segments. A file is never removed, even if nothing is left in it: it stays, empty. The
 /// selection falls back to the closest element still existing.
-fn prune(state: &mut State, emptied: &HashSet<TrackSegmentId>, wpt_files: &HashSet<FileId>) {
+pub(super) fn prune(
+    state: &mut State,
+    emptied: &HashSet<TrackSegmentId>,
+    wpt_files: &HashSet<FileId>,
+) {
     let ids: Vec<FileId> = state
         .files
         .iter()

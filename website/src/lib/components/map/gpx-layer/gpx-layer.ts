@@ -467,6 +467,11 @@ export class GPXLayer {
             return;
         }
 
+        if (get(currentTool) === Tool.POINTS) {
+            // the points tool inserts a point where the line is clicked
+            return;
+        }
+
         if (
             get(currentTool) === Tool.SCISSORS &&
             isCovered(this.selectionState, this.segmentNode(properties))

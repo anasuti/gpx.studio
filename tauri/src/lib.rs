@@ -161,6 +161,9 @@ pub fn register_commands<R: tauri::Runtime>(builder: tauri::Builder<R>) -> tauri
         edit::clean,
         edit::route,
         edit::insert_anchor,
+        edit::move_trackpoint,
+        edit::insert_trackpoint,
+        edit::delete_trackpoint,
         edit::change_loop_start,
         edit::split,
         // queries

@@ -22,6 +22,57 @@ export function closestPointIndexIn(
     return closest === undefined ? undefined : from + closest;
 }
 
+/**
+ * The position of the point of the polyline `from` (included) to `to` (included) of the arrays of
+ * its longitudes and latitudes that is the closest to `point`, which is where a trackpoint would
+ * be inserted to go through `point`: `index` is the index that the new trackpoint gets in the
+ * arrays (between `index - 1` and `index`), `ratio` how far it is from the trackpoint `index - 1`
+ * towards `index`, and `lng`/`lat` the coordinates projected on the polyline. `undefined` if the
+ * range has less than two trackpoints. Planar approximation, like the one used to simplify tracks.
+ */
+export function projectOnPolyline(
+    lng: ArrayLike<number>,
+    lat: ArrayLike<number>,
+    from: number,
+    to: number,
+    point: { lng: number; lat: number }
+): { index: number; ratio: number; lng: number; lat: number } | undefined {
+    const count = Math.max(0, to - from + 1);
+    if (count < 2) {
+        return undefined;
+    }
+    const kx = Math.cos((point.lat * Math.PI) / 180) * metersPerDegree;
+    const ky = metersPerDegree;
+    const px = point.lng * kx;
+    const py = point.lat * ky;
+    const x = (i: number) => lng[from + i] * kx - px;
+    const y = (i: number) => lat[from + i] * ky - py;
+
+    let bestRatio = 0;
+    let bestIndex = 1;
+    let bestDistance = Number.MAX_VALUE;
+    for (let i = 0; i < count - 1; i++) {
+        const [ax, ay, bx, by] = [x(i), y(i), x(i + 1), y(i + 1)];
+        const [dx, dy] = [bx - ax, by - ay];
+        const length = dx * dx + dy * dy;
+        const t = length === 0 ? 0 : Math.max(0, Math.min(1, -(ax * dx + ay * dy) / length));
+        const distance = Math.hypot(ax + t * dx, ay + t * dy);
+        if (distance < bestDistance) {
+            bestDistance = distance;
+            bestRatio = t;
+            bestIndex = from + i + 1;
+        }
+    }
+
+    const before = bestIndex - 1;
+    return {
+        index: bestIndex,
+        ratio: bestRatio,
+        lng: lng[before] + bestRatio * (lng[bestIndex] - lng[before]),
+        lat: lat[before] + bestRatio * (lat[bestIndex] - lat[before]),
+    };
+}
+
 function closestIndex(
     count: number,
     lngAt: (index: number) => number,

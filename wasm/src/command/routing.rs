@@ -49,6 +49,29 @@ pub fn insert_anchor(revision: u32, lng: f64, lat: f64) -> Outcome {
     run(|e| api::insert_anchor(e, revision, lng, lat))
 }
 
+/// Moves the trackpoint `index` of the selection to the given coordinates, keeping its elevation,
+/// time and other data. Does nothing, and says why, if the revision of the routing buffers is not
+/// the given one.
+#[wasm_bindgen]
+pub fn move_trackpoint(revision: u32, index: u32, lng: f64, lat: f64) -> Outcome {
+    run(|e| api::move_trackpoint(e, revision, index, lng, lat))
+}
+
+/// Inserts a trackpoint at `index` in the selection: the new point is at that index, and the ones
+/// from there on are shifted. Does nothing, and says why, if the revision of the routing buffers
+/// is not the given one.
+#[wasm_bindgen]
+pub fn insert_trackpoint(revision: u32, index: u32, lng: f64, lat: f64, ele: f64) -> Outcome {
+    run(|e| api::insert_trackpoint(e, revision, index, lng, lat, ele))
+}
+
+/// Deletes the trackpoint `index` of the selection. Does nothing, and says why, if the revision of
+/// the routing buffers is not the given one.
+#[wasm_bindgen]
+pub fn delete_trackpoint(revision: u32, index: u32) -> Outcome {
+    run(|e| api::delete_trackpoint(e, revision, index))
+}
+
 /// Makes the trackpoint `index` of the selection the start of its segment, which is a loop (the
 /// trackpoints before it go to the end, and the loop closes on it). Does nothing, and says why, if the revision of the
 /// routing buffers is not the given one.

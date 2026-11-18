@@ -253,6 +253,15 @@ export interface Backend {
         anchors: Uint32Array
     ): Promise<Outcome>;
     insert_anchor(revision: number, lng: number, lat: number): Promise<Outcome>;
+    move_trackpoint(revision: number, index: number, lng: number, lat: number): Promise<Outcome>;
+    insert_trackpoint(
+        revision: number,
+        index: number,
+        lng: number,
+        lat: number,
+        ele: number
+    ): Promise<Outcome>;
+    delete_trackpoint(revision: number, index: number): Promise<Outcome>;
     change_loop_start(revision: number, index: number): Promise<Outcome>;
 
     // The files and the selection

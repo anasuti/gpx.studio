@@ -144,11 +144,12 @@ export class StatisticsReader {
                         break;
                     }
                     case 'segments': {
-                        const [starts, ids] = await Promise.all([
+                        const [starts, ids, revision] = await Promise.all([
                             backend.segment_starts(),
                             backend.segment_ids(),
+                            backend.routing_revision(),
                         ]);
-                        statistics.segments = { starts, ids };
+                        statistics.segments = { starts, ids, revision };
                         break;
                     }
                     case 'highway':

@@ -571,6 +571,33 @@ class Engine {
     }
 
     /**
+     * Moves the trackpoint `index` of the selection to the given coordinates, keeping its
+     * elevation, time and other data: what dragging it on the map does, without rerouting its
+     * segment. `revision` is the one of `SelectionSegments`.
+     */
+    moveTrackpoint(revision: number, index: number, lng: number, lat: number) {
+        return this.run((b) => b.move_trackpoint(revision, index, lng, lat));
+    }
+
+    /**
+     * Inserts a trackpoint at `index` in the selection (`index` is the index the new point gets in
+     * the selection): the new point has the given coordinates and elevation, and its time and other
+     * data come from its neighbours. `revision` is the one of `SelectionSegments`.
+     */
+    insertTrackpoint(revision: number, index: number, lng: number, lat: number, ele: number) {
+        return this.run((b) => b.insert_trackpoint(revision, index, lng, lat, ele));
+    }
+
+    /**
+     * Deletes the trackpoint `index` of the selection. A segment left without trackpoints is
+     * removed, with its route or its track when they have nothing left. `revision` is the one of
+     * `SelectionSegments`.
+     */
+    deleteTrackpoint(revision: number, index: number) {
+        return this.run((b) => b.delete_trackpoint(revision, index));
+    }
+
+    /**
      * Makes the trackpoint `index` of the selection the start of its segment, which is a loop:
      * the trackpoints before it go to the end, and the loop closes on it. `revision` is the one of `SelectionAnchors`.
      */

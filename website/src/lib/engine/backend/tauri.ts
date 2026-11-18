@@ -146,6 +146,11 @@ export async function createTauriBackend(): Promise<Backend> {
                 anchors: Array.from(anchors),
             }),
         insert_anchor: (revision, lng, lat) => invoke('insert_anchor', { revision, lng, lat }),
+        move_trackpoint: (revision, index, lng, lat) =>
+            invoke('move_trackpoint', { revision, index, lng, lat }),
+        insert_trackpoint: (revision, index, lng, lat, ele) =>
+            invoke('insert_trackpoint', { revision, index, lng, lat, ele }),
+        delete_trackpoint: (revision, index) => invoke('delete_trackpoint', { revision, index }),
         change_loop_start: (revision, index) => invoke('change_loop_start', { revision, index }),
 
         can_undo: () => invoke('can_undo'),
